@@ -1,0 +1,72 @@
+.modal-body {
+    background: linear-gradient(to bottom, #fff 0%, #95528e 100%);
+  }
+  
+  form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    width: 20%;
+    float: left;
+  }
+  
+  .form-control {
+    width: 70%;
+    margin-left: 5%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  .form-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .form-buttons button {
+    width: 48%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+  
+  .form-buttons button:first-child {
+    margin-right: 4%;
+  }
+  
+  .form-buttons button:hover {
+    background-color: #80bdff;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+  }
+  
+  .form-buttons button:active {
+    background-color: #007bff;
+    box-shadow: none;
+    transform: translateY(2px);
+  }
+  

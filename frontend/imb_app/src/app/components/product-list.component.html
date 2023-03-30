@@ -1,0 +1,38 @@
+<div class="container">
+  <h2>List of all IBM products</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product Id</th>
+        <th>Product Name</th>
+        <th>Product Owner</th>
+        <th>Scrum Master</th>
+        <th>Developers</th>
+        <th>Start Date</th>
+        <th>Methodology</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.productId }}</td>
+        <td [contentEditable]="isEdit && product === selectedProduct">{{ product.productName }}</td>
+        <td [contentEditable]="isEdit && product === selectedProduct">{{ product.productOwnerName }}</td>
+        <td [contentEditable]="isEdit && product === selectedProduct">{{ product.scrumMasterName }}</td>
+        <td [contentEditable]="isEdit && product === selectedProduct">{{ product.developers }}</td>
+        <td [style.backgroundColor]="'#eee'" [contentEditable]="false">{{ product.startDate }}</td>
+        <td [contentEditable]="isEdit && product === selectedProduct">{{ product.methodology }}</td>
+        <td>
+          <div class="btn-group">
+            <button (click)="updateProduct(product)" class="update-btn btn-primary" *ngIf="isEdit"><i class="material-icons">save</i></button>
+            <button (click)="editProduct(product)" class="edit_Del-btn btn-primary" *ngIf="!isEdit"><i class="material-icons">edit</i></button>
+            <button (click)="deleteProduct(product)" class="edit_Del-btn btn-danger"><i class="material-icons">delete</i></button>
+          </div>
+        </td>
+        
+      </tr>
+    </tbody>
+  </table>
+  <p><strong>Total number of products: {{ products.length }}</strong></p>
+  <button class="btn btn-primary mr-2" (click)="showAddProductDialog()">Add New Product</button>
+</div>
