@@ -34,4 +34,4 @@ Here's the list of CRUD api's. Here's the Postman Collection (`IMB.postman_colle
 ## Landing Page
 `product-list.component.html ` IS THE DEFAULT LANDING PAGE
 ## IMPORTANT
-New data gets generated every time the app 
+New data gets generated every time the app gets started
