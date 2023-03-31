@@ -21,7 +21,7 @@ export class FilterPipe implements PipeTransform {
             return developerName.toLowerCase() === searchText;
           })) ||
         (item.scrumMasterName &&
-          item.scrumMasterName.toString().toLowerCase() === searchText)
+          item.scrumMasterName.toString().trim().toLowerCase() === searchText)
       );
     });
     console.log('FilterPipe returning:', filteredItems);
