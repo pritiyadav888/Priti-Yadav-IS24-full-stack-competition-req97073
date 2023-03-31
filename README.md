@@ -30,3 +30,6 @@ Here's the list of CRUD api's. Here's the Postman Collection (`IMB.postman_colle
 4. PUT (Update existing product by id): `http://localhost:3000/api/products/:id`
 5. DELETE (Delete existing product by id): `http://localhost:3000/api/products/:id`
 6. GET (get product by id) : `http://localhost:3000/api/products/:id`
+
+## Landing Page
+`product-list.component.html ` IS THE DEFAULT LANDING PAGE
