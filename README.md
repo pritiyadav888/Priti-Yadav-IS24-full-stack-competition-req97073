@@ -2,7 +2,7 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.4.
 
-NOTE- Make sure to have Angular CLI installed (Install -- nmp instll -g @angular/cli)
+NOTE- Make sure to have Angular CLI installed (`npm insatll -g @angular/cli`)
 
 ## Backend server
 
