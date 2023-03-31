@@ -4,6 +4,7 @@ import { ProductService, Product } from '../product.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { AddProductDialogComponent } from '../add-product-dialog/add-product-dialog.component';
+import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-product-list',
@@ -19,7 +20,7 @@ export class ProductListComponent implements OnInit {
   selectedProduct: Product | undefined;
   showForm = false;
   searchText: string = '';
-  // totalFilteredProducts = 0;
+  filteredProducts: any[];
 
   private PRODUCT_API_URL = 'http://localhost:3000/api/products';
 
@@ -28,7 +29,9 @@ export class ProductListComponent implements OnInit {
     private productService: ProductService,
     private http: HttpClient,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.filteredProducts = [];
+  }
 
   ngOnInit(): void {
     this.productForm = this.formBuilder.group({
@@ -46,10 +49,8 @@ export class ProductListComponent implements OnInit {
   onBackButtonClick(): void {
     location.reload();
   }
-  // get totalFilteredProducts(): number {
-  //   return (this.products | filter : this.searchText).total;
-  // }
-
+  
+  
   loadProducts(): void {
     this.http.get<Product[]>(this.PRODUCT_API_URL).subscribe(
       (data) => {

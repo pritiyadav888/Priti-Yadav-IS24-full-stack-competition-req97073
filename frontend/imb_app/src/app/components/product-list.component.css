@@ -61,12 +61,35 @@ mat-raised-button {
   border-radius: 5px;
   cursor: pointer;
 }
+.btn:hover {
+  background: linear-gradient(to bottom, #e7baec 0%, #ff9bd2 100%);
+}
+
 .btn-group {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+.back-button {
+  display:inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-left: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  background: linear-gradient(to bottom, #e27ceb 0%, #ff82c2 100%);
+  color: #282121;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
 
+.back-button:hover {
+  background: linear-gradient(to bottom, #e7baec 0%, #ff9bd2 100%);
+}
 .edit_Del-btn {
   margin-right: 5px;
   padding: 5px 10px;
@@ -74,10 +97,6 @@ mat-raised-button {
 }
 .material-icons {
   font-size: 18px;
-}
-
-.btn:hover {
-  background: linear-gradient(to bottom, #e7baec 0%, #ff9bd2 100%);
 }
 
 /* .search-hero {

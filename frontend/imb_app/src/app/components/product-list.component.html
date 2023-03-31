@@ -1,120 +1,119 @@
 <div class="container">
   <h2 style="text-align: center">Product List</h2>
   <div class="top-section">
-    <div class="total-products">
-      <strong>Total number of products: {{ products.length }}</strong>
-    </div>
-    <div class="search-add-container">
-      <button class="btn btn-primary mr-2" (click)="showAddProductDialog()">
-        Add Product
-      </button>
-      <div class="search-hero">
-        <input
-        class="form-control"
-        type="text"
-        name="search"
-        [style.backgroundColor]="'#e0d5e8'"
-        [(ngModel)]="searchText"
-        autocomplete="off"
-        placeholder="&#61442; Start searching for record by Scrum master name OR Developer name"
-        style="width: 50%"
-      />
+    <div *ngIf="products | filter: searchText as filteredProducts">
+      <div class="total-products">
+        <strong>Total number of products: {{ products.length }}</strong>
+        <br />
+        <strong>
+          Number of filtered products:
+          {{ searchText ? filteredProducts.length : 0 }}
+        </strong>
+        <br *ngIf="searchText && filteredProducts.length > 0" />
+        <strong *ngIf="searchText && filteredProducts.length > 0">
+          {{ searchText }} is in {{ filteredProducts.length }} Projects
+        </strong>
       </div>
-      <button (click)="onBackButtonClick()">Back</button>
+      <div class="search-add-container">
+        <button class="btn btn-primary mr-2" (click)="showAddProductDialog()">
+          Add Product
+        </button>
+        <div class="search-hero">
+          <input
+            class="form-control"
+            type="text"
+            name="search"
+            [style.backgroundColor]="'#e0d5e8'"
+            [(ngModel)]="searchText"
+            autocomplete="off"
+            placeholder="&#61442; Start searching for record by Scrum master name OR Developer name"
+            style="width: 50%"
+          />
+        </div>
+        <button (click)="onBackButtonClick()" class="back-button">Back</button>
+      </div>
     </div>
-  </div>
+    <div *ngIf="products | filter : searchText as filteredProducts">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Product Number</th>
+            <th>Product Name</th>
+            <th>Product Owner</th>
+            <th>Scrum Master</th>
+            <th>Developers</th>
+            <th>Start Date</th>
+            <th>Methodology</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of filteredProducts">
+            <td [style.backgroundColor]="'#e0d5e8'" [contentEditable]="false">
+              {{ product.productId }}
+            </td>
+            <td [contentEditable]="isEdit && product === selectedProduct">
+              {{ product.productName }}
+            </td>
+            <td [contentEditable]="isEdit && product === selectedProduct">
+              {{ product.productOwnerName }}
+            </td>
+            <td [contentEditable]="isEdit && product === selectedProduct">
+              {{ product.scrumMasterName }}
+            </td>
+            <td [contentEditable]="isEdit && product === selectedProduct">
+              {{ product.developers }}
+            </td>
+            <td [style.backgroundColor]="'#e0d5e8'" [contentEditable]="false">
+              {{ product.startDate | date : "dd/MM/yyyy" }}
+              <td>
+                <ng-container *ngIf="!isEdit || product !== selectedProduct">
+                  {{ product.methodology }}
+                </ng-container>
+                <ng-container *ngIf="isEdit && product === selectedProduct">
+                  <select [(ngModel)]="product.methodology">
+                    <option value="Agile">Agile</option>
+                    <option value="Waterfall">Waterfall</option>
+                  </select>
+                </ng-container>
+              </td>
+              <td>
+                <div class="btn-group">
+                  <button
+                    (click)="updateProduct(product, $event)"
+                    class="update-btn btn-primary"
+                    *ngIf="isEdit && product === selectedProduct"
+                  >
+                    <i class="material-icons">save</i>Save
+                  </button>
+                  <button
+                    (click)="cancelEdit()"
+                    class="cancel-btn btn-secondary"
+                    *ngIf="isEdit && product === selectedProduct"
+                  >
+                    <i class="material-icons">cancel</i>Cancel
+                  </button>
+                  <button
+                    (click)="editProduct(product)"
+                    class="edit_Del-btn btn-primary"
+                    *ngIf="!isEdit"
+                  >
+                    <i class="material-icons">edit</i>Edit
+                  </button>
+                  <button
+                    (click)="deleteProduct(product)"
+                    class="edit_Del-btn btn-danger"
+                    *ngIf="!isEdit"
+                  >
+                    <i class="material-icons">delete</i>Del
+                  </button>
+                </div>
+              </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="productAddedMessage" class="product-added-message">
+      {{ productAddedMessage }}
+    </div>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Product Number</th>
-        <th>Product Name</th>
-        <th>Product Owner</th>
-        <th>Scrum Master</th>
-        <th>Developers</th>
-        <th>Start Date</th>
-        <th>Methodology</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of products | filter : searchText">
-        <td [style.backgroundColor]="'#e0d5e8'" [contentEditable]="false">
-          {{ product.productId }}
-        </td>
-        <td
-          [contentEditable]="isEdit && product === selectedProduct"
-        >
-          {{ product.productName }}
-        </td>
-        <td
-          [contentEditable]="isEdit && product === selectedProduct"
-        >
-          {{ product.productOwnerName }}
-        </td>
-        <td
-          [contentEditable]="isEdit && product === selectedProduct"
-        >
-          {{ product.scrumMasterName }}
-        </td>
-        <td
-          [contentEditable]="isEdit && product === selectedProduct"
-        >
-          {{ product.developers }}
-        </td>
-        <td [style.backgroundColor]="'#e0d5e8'" [contentEditable]="false">
-          {{ product.startDate }}
-        </td>
-        <td>
-          <ng-container *ngIf="!isEdit || product !== selectedProduct">
-            {{ product.methodology }}
-          </ng-container>
-          <ng-container *ngIf="isEdit && product === selectedProduct">
-            <select [(ngModel)]="product.methodology">
-              <option value="Agile">Agile</option>
-              <option value="Waterfall">Waterfall</option>
-            </select>
-          </ng-container>
-        </td>
-        <td>
-          <div class="btn-group">
-            <button
-              (click)="updateProduct(product, $event)"
-              class="update-btn btn-primary"
-              *ngIf="isEdit && product === selectedProduct"
-            >
-              <i class="material-icons">save</i>Save
-            </button>
-            <button
-              (click)="cancelEdit()"
-              class="cancel-btn btn-secondary"
-              *ngIf="isEdit && product === selectedProduct"
-            >
-              <i class="material-icons">cancel</i>Cancel
-            </button>
-            <button
-              (click)="editProduct(product)"
-              class="edit_Del-btn btn-primary"
-              *ngIf="
-                (!isEdit && product !== selectedProduct) ||
-                (isEdit && product !== selectedProduct)
-              "
-            >
-              <i class="material-icons">edit</i>Edit
-            </button>
-            <button
-              (click)="deleteProduct(product)"
-              class="edit_Del-btn btn-danger"
-              *ngIf="
-                (!isEdit && product !== selectedProduct) ||
-                (isEdit && product !== selectedProduct)
-              "
-            >
-              <i class="material-icons">delete</i>Del
-            </button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  </div>

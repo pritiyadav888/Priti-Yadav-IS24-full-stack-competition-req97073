@@ -4,21 +4,21 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 NOTE- Make sure to have Angular CLI installed (`npm insatll -g @angular/cli`)
 
-## Backend server
+This project has seperate frontend and backend(`server` in this case)
 
-1. Open new terminal
-2. Navigate to server
+## Backend server
+1. Please clone the git repo. 
+2. In a new terminal navigate to `server` directroy
 3. Run `npm install`
 4. Run this command to run the frontend --  `node index.js`
 5. Navigate to `http://localhost:3000/api/health`. 
 6. Navigate to `http://localhost:3000/api/api-docs/` to get swagger
 
 ## Run Frontend
-1. PLease clone the git repo. 
-2. Navigate to frontend/imb_app
-3. Run `npm install`
-4. Run this command to run the frontend --  `ng serve`
-5. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+1. Navigate to frontend/imb_app
+2. Run `npm install`
+3. Run this command to run the frontend --  `ng serve`
+4. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## CRUD(APIs)
 
