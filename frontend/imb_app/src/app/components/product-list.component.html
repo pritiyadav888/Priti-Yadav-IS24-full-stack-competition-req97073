@@ -1,8 +1,15 @@
 <div class="container">
-  <h2>List of all IMB products</h2>
-  <div class="row">
-    <div class="search-hero">
-      <input
+  <h2 style="text-align: center">Product List</h2>
+  <div class="top-section">
+    <div class="total-products">
+      <strong>Total number of products: {{ products.length }}</strong>
+    </div>
+    <div class="search-add-container">
+      <button class="btn btn-primary mr-2" (click)="showAddProductDialog()">
+        Add Product
+      </button>
+      <div class="search-hero">
+        <input
         class="form-control"
         type="text"
         name="search"
@@ -10,13 +17,17 @@
         [(ngModel)]="searchText"
         autocomplete="off"
         placeholder="&#61442; Start searching for record by Scrum master name OR Developer name"
+        style="width: 50%"
       />
+      </div>
+      <button (click)="onBackButtonClick()">Back</button>
     </div>
   </div>
+
   <table class="table">
     <thead>
       <tr>
-        <th>Product Id</th>
+        <th>Product Number</th>
         <th>Product Name</th>
         <th>Product Owner</th>
         <th>Scrum Master</th>
@@ -33,25 +44,21 @@
         </td>
         <td
           [contentEditable]="isEdit && product === selectedProduct"
-          (click)="selectedProduct = product"
         >
           {{ product.productName }}
         </td>
         <td
           [contentEditable]="isEdit && product === selectedProduct"
-          (click)="selectedProduct = product"
         >
           {{ product.productOwnerName }}
         </td>
         <td
           [contentEditable]="isEdit && product === selectedProduct"
-          (click)="selectedProduct = product"
         >
           {{ product.scrumMasterName }}
         </td>
         <td
           [contentEditable]="isEdit && product === selectedProduct"
-          (click)="selectedProduct = product"
         >
           {{ product.developers }}
         </td>
@@ -110,13 +117,4 @@
       </tr>
     </tbody>
   </table>
-  <p>
-    <strong>Total number of products: {{ products.length }}</strong>
-  </p>
-  <div *ngIf="productAddedMessage" class="product-added-message">
-    {{ productAddedMessage }}
-  </div>
-  <button class="btn btn-primary mr-2" (click)="showAddProductDialog()">
-    Add Product
-  </button>
 </div>

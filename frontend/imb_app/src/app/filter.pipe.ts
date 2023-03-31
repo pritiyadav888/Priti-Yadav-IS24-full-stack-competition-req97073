@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterPipe implements PipeTransform {
   transform(items: any[], searchText: string): any[] {
+    console.log('FilterPipe called with:', { items, searchText });
     if (!items) {
       return [];
     }
@@ -12,11 +13,18 @@ export class FilterPipe implements PipeTransform {
       return items;
     }
     searchText = searchText.toLowerCase();
-    return items.filter(item => {
-      // Check if the search text is found in any of the fields
-      return Object.values(item).some((field: any) => {
-        return field && field.toString().toLowerCase().includes(searchText);
-      });
+    const filteredItems = items.filter(item => {
+      // Check if the search text exactly matches any element in the developers array or the Scrum Master name field
+      return (
+        (item.developers &&
+          item.developers.some((developerName: string) => {
+            return developerName.toLowerCase() === searchText;
+          })) ||
+        (item.scrumMasterName &&
+          item.scrumMasterName.toString().toLowerCase() === searchText)
+      );
     });
+    console.log('FilterPipe returning:', filteredItems);
+    return filteredItems;
   }
 }

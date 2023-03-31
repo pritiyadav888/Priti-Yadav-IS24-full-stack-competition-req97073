@@ -80,12 +80,12 @@ mat-raised-button {
   background: linear-gradient(to bottom, #e7baec 0%, #ff9bd2 100%);
 }
 
-.search-hero {
-  padding-bottom: 10px;
+/* .search-hero {
+  padding-bottom: 20px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-}
+} */
 
 .form-control {
   height: 25px;
@@ -127,4 +127,25 @@ mat-raised-button {
   100% {
     opacity: 1;
   }
+}
+
+.top-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.search-add-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.total-products {
+  text-align: center;
+  padding-bottom: 20px;
+}
+.search-hero {
+  flex-grow: 1;
+  margin-left: auto;
 }

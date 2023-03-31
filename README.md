@@ -2,9 +2,22 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.4.
 
-## Development server
+NOTE- Make sure to have Angular CLI installed (Install -- nmp instll -g @angular/cli)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Run Frontend
+PLease clone the git repo. 
+Navigate to frontend/imb_app
+Run `npm install`
+Run this command to run the frontend --  `ng serve`
+Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+## Backend server
+
+Open new terminal
+Navigate to server
+Run `npm install`
+Run this command to run the frontend --  `node index.js`
+Navigate to `http://localhost:3000/api`. 
 
 ## Code scaffolding
 

@@ -19,6 +19,7 @@ export class ProductListComponent implements OnInit {
   selectedProduct: Product | undefined;
   showForm = false;
   searchText: string = '';
+  // totalFilteredProducts = 0;
 
   private PRODUCT_API_URL = 'http://localhost:3000/api/products';
 
@@ -41,6 +42,13 @@ export class ProductListComponent implements OnInit {
     this.loadProducts();
     this.selectedProduct = undefined;
   }
+
+  onBackButtonClick(): void {
+    location.reload();
+  }
+  // get totalFilteredProducts(): number {
+  //   return (this.products | filter : this.searchText).total;
+  // }
 
   loadProducts(): void {
     this.http.get<Product[]>(this.PRODUCT_API_URL).subscribe(
@@ -138,17 +146,28 @@ updateProduct(product: Product, event: Event): void {
     developers: developers ? developers.split(', ') : [],
     methodology,
   };
-  console.log('updatedProduct.methodology:', updatedProduct.methodology);
   // Check if any of the required fields are empty
-  if (
-    !productName ||
-    !productOwnerName ||
-    !scrumMasterName ||
-    !developers ||
-    !methodology
-  ) {
-    // Display an error message
-    this.productAddedMessage = 'All fields are required!';
+  function generateErrorMessage(fields: { value: any; message: string }[]): string {
+    return fields.reduce((acc, field) => {
+      if (!field.value) {
+        acc += field.message;
+      }
+      return acc;
+    }, '');
+  }
+  
+  const fields = [
+    { value: productName, message: 'Product Name field is required. ' },
+    { value: productOwnerName, message: 'Product Owner Name field is required. ' },
+    { value: scrumMasterName, message: 'Scrum Master Name field is required. ' },
+    { value: developers, message: 'Developers field is required. ' },
+    { value: methodology, message: 'Methodology field is required. ' },
+  ];
+  
+  const errorMessage = generateErrorMessage(fields);
+  
+  if (errorMessage) {
+    this.productAddedMessage = errorMessage;
     setTimeout(() => {
       this.productAddedMessage = undefined;
     }, 3000);
