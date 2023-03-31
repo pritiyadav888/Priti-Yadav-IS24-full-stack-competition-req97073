@@ -17,17 +17,19 @@ import { FormsModule } from '@angular/forms';
 import { AddProductDialogComponent } from './add-product-dialog/add-product-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-
+import { FilterPipe } from './filter.pipe';
 const routes: Routes = [
   { path: '', redirectTo: 'products', pathMatch: 'full' },
   { path: 'products', component: ProductListComponent },
   { path: '', component: ProductListComponent },
+  
   // { path: 'edit-product/:id', component: EditProductComponent }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
+    FilterPipe,
     ProductListComponent,
     AddProductDialogComponent
   ],

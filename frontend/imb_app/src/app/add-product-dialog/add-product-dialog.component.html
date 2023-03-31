@@ -8,20 +8,21 @@
   <form [formGroup]="productForm" (ngSubmit)="addProduct()">
     <div class="form-group">
       <label for="productName">Product Name</label>
-      <input type="text" class="form-control" formControlName="productName">
+      <input type="text" class="form-control" formControlName="productName" placeholder="Enter product name">
     </div>
     <div class="form-group">
       <label for="scrumMasterName">Scrum Master</label>
-      <input type="text" class="form-control" formControlName="scrumMasterName">
+      <input type="text" class="form-control" formControlName="scrumMasterName" placeholder="Enter Scrum Master name">
     </div>
     <div class="form-group">
       <label for="productOwnerName">Product Owner</label>
-      <input type="text" class="form-control" formControlName="productOwnerName">
+      <input type="text" class="form-control" formControlName="productOwnerName" placeholder="Enter Product Owner name">
     </div>
-    <div class="form-group" formArrayName="developers">
+    <div class="form-group">
       <label for="developers">Developer Names (up to 5)</label>
-      <div *ngFor="let developer of developers; let i=index">
-        <input type="text" class="form-control" [formControlName]="i">
+      <input type="text" class="form-control" formControlName="developers" placeholder="Enter developer names separated by commas">
+      <div *ngIf="productForm.get('developers')?.hasError('tooManyDevelopers')">
+        You can enter up to 5 developer names.
       </div>
     </div>
     <div class="form-group">

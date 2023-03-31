@@ -8,7 +8,7 @@ import { AddProductDialogComponent } from '../add-product-dialog/add-product-dia
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+  styleUrls: ['./product-list.component.css'],
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
@@ -18,12 +18,13 @@ export class ProductListComponent implements OnInit {
   isEdit = false;
   selectedProduct: Product | undefined;
   showForm = false;
+  searchText: string = '';
 
   private PRODUCT_API_URL = 'http://localhost:3000/api/products';
 
   constructor(
-    private formBuilder: FormBuilder, 
-    private productService: ProductService, 
+    private formBuilder: FormBuilder,
+    private productService: ProductService,
     private http: HttpClient,
     private dialog: MatDialog
   ) {}
@@ -35,18 +36,21 @@ export class ProductListComponent implements OnInit {
       scrumMasterName: '',
       developers: '',
       startDate: '',
-      methodology: ''
+      methodology: '',
     });
     this.loadProducts();
+    this.selectedProduct = undefined;
   }
 
   loadProducts(): void {
     this.http.get<Product[]>(this.PRODUCT_API_URL).subscribe(
-      data => {
-        this.products = data.sort((a, b) => (a.productId ?? 0) - (b.productId ?? 0));
+      (data) => {
+        this.products = data.sort(
+          (a, b) => (a.productId ?? 0) - (b.productId ?? 0)
+        );
         this.totalProducts = this.products.length;
       },
-      error => {
+      (error) => {
         this.errorMessage = error.message;
       }
     );
@@ -66,24 +70,23 @@ export class ProductListComponent implements OnInit {
     this.productForm.reset();
     this.hideProductForm();
   }
-
   saveProduct(productToUpdate: Product): void {
-    const productToSave: Product = {...productToUpdate};
+    const productToSave: Product = { ...productToUpdate };
     if (this.isEdit) {
       // Editing an existing product
       productToSave.productId = this.selectedProduct?.productId;
-      this.productService.updateProduct(productToSave).subscribe(
-        product => {
-          const index = this.products.findIndex(p => p.productId === product.productId);
+      this.productService.updateProduct(productToUpdate.productId!, productToSave).subscribe(
+        (product) => {
+          const index = this.products.findIndex(
+            (p) => p.productId === product.productId
+          );
           if (index !== -1) {
             this.products[index] = product;
           }
           this.isEdit = false;
           this.selectedProduct = undefined;
-          this.productForm.reset();
-          this.hideProductForm();
         },
-        error => {
+        (error) => {
           this.errorMessage = error.message;
           this.handleProductAddError(error);
         }
@@ -91,38 +94,114 @@ export class ProductListComponent implements OnInit {
     } else {
       // Adding a new product
       this.productService.addProduct(productToSave).subscribe(
-        product => {
-          this.addProduct(product);
+        (product) => {
+          this.products.push(product);
+          this.totalProducts++;
+          this.selectedProduct = undefined;
+          this.isEdit = false;
           this.handleProductAdded(product);
         },
-        error => {
+        (error) => {
           this.errorMessage = error.message;
           this.handleProductAddError(error);
         }
       );
     }
   }
-  
-  updateProduct(product: Product): void {
-    this.productService.updateProduct(product)
-      .subscribe(updatedProduct => {
-        this.selectedProduct = undefined;
-        this.isEdit = false;
-      });
+
+// Update product
+updateProduct(product: Product, event: Event): void {
+  // Get updated values from table cells
+  const productName = (event.target as HTMLElement)
+    .closest('tr')
+    ?.querySelector('td:nth-child(2)')?.textContent ?? '';
+  const productOwnerName = (event.target as HTMLElement)
+    .closest('tr')
+    ?.querySelector('td:nth-child(3)')?.textContent ?? '';
+  const scrumMasterName = (event.target as HTMLElement)
+    .closest('tr')
+    ?.querySelector('td:nth-child(4)')?.textContent ?? '';
+  const developers = (event.target as HTMLElement)
+    .closest('tr')
+    ?.querySelector('td:nth-child(5)')?.textContent;
+    const methodologySelect = (event.target as HTMLElement)
+    .closest('tr')
+    ?.querySelector('td:nth-child(7) select') as HTMLSelectElement;
+  const methodology = methodologySelect?.value ?? '';
+
+  // Create a new Product object with updated values
+  const updatedProduct: Product = {
+    ...product,
+    productName,
+    productOwnerName,
+    scrumMasterName,
+    developers: developers ? developers.split(', ') : [],
+    methodology,
+  };
+  console.log('updatedProduct.methodology:', updatedProduct.methodology);
+  // Check if any of the required fields are empty
+  if (
+    !productName ||
+    !productOwnerName ||
+    !scrumMasterName ||
+    !developers ||
+    !methodology
+  ) {
+    // Display an error message
+    this.productAddedMessage = 'All fields are required!';
+    setTimeout(() => {
+      this.productAddedMessage = undefined;
+    }, 3000);
+    return;
   }
-  
-editProduct(product: any) {
-  this.selectedProduct = product;
-  this.isEdit = true;
+    // Call productService.updateProduct() to update product on server
+  this.productService.updateProduct(product.productId!, updatedProduct).subscribe(
+    (updatedProduct) => {
+      // Update product in products array
+      const index = this.products.findIndex(
+        (p) => p.productId === updatedProduct.productId
+      );
+      if (index !== -1) {
+        this.products[index] = updatedProduct;
+      }
+
+      // Reset isEdit and selectedProduct properties
+      this.isEdit = false;
+      this.selectedProduct = undefined;
+
+      // Display "product updated" message
+      this.productAddedMessage = 'Product updated! 🎉👏';
+      setTimeout(() => {
+        this.productAddedMessage = undefined;
+      }, 3000);
+    },
+    (error) => {
+      // Handle error
+      console.error(error);
+    }
+  );
 }
 
-
-  deleteProduct(product: Product): void {
+editProduct(product: any) {
+    this.selectedProduct = product;
+    this.isEdit = true;
+  }
+cancelEdit(): void {
+    this.isEdit = false;
+    this.selectedProduct = undefined;
+  }
+deleteProduct(product: Product): void {
     // eslint-disable-next-line no-restricted-globals
-    if (confirm(`Are you sure you want to delete product "${product.productName}"?`)) {
+    if (
+      confirm(
+        `Are you sure you want to delete product "${product.productName}"?`
+      )
+    ) {
       if (product.productId !== undefined) {
         this.productService.deleteProduct(product.productId).subscribe(() => {
-          const index = this.products.findIndex(p => p.productId === product.productId);
+          const index = this.products.findIndex(
+            (p) => p.productId === product.productId
+          );
           if (index !== -1) {
             this.products.splice(index, 1);
             this.totalProducts--;
@@ -140,17 +219,37 @@ editProduct(product: any) {
   handleProductAddError(error: any) {
     console.log(`Error adding product: ${error.message}`);
   }
-   // Add this method
-   showAddProductDialog() {
-    const dialogRef = this.dialog.open(AddProductDialogComponent);
-  
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-      if (result === 'confirm') {
-        if (this.selectedProduct) {
-          this.saveProduct(this.selectedProduct);
-        }
+  // Add this method
+  productAddedMessage?: string;
+
+showAddProductDialog() {
+  const dialogRef = this.dialog.open(AddProductDialogComponent);
+
+  dialogRef.componentInstance.productAdded.subscribe((product: Product) => {
+    this.getProducts();
+    this.productAddedMessage = 'New product added! 🎉👏';
+    setTimeout(() => {
+      this.productAddedMessage = undefined;
+    }, 3000);
+  });
+
+  dialogRef.afterClosed().subscribe((result) => {
+    console.log(`Dialog result: ${result}`);
+    if (result === 'confirm') {
+      if (this.selectedProduct) {
+        this.saveProduct(this.selectedProduct);
       }
-    });
+    }
+  });
+}
+getProducts() {
+    this.productService.getProducts().subscribe(
+      (products: Product[]) => {
+        this.products = products;
+      },
+      error => {
+        this.errorMessage = error.message;
+      }
+    );
   }
 }

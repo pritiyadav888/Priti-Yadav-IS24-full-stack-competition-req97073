@@ -1,6 +1,6 @@
 body {
   background-attachment: fixed;
-  background: linear-gradient(to bottom, #9d7d98 0%, #af5ca6 25%, #8c3c7d 50%, #470f58 100%);
+  background: #405065;
   }
 
 .container {
@@ -69,10 +69,62 @@ mat-raised-button {
 
 .edit_Del-btn {
   margin-right: 5px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+.material-icons {
+  font-size: 18px;
 }
 
 .btn:hover {
   background: linear-gradient(to bottom, #e7baec 0%, #ff9bd2 100%);
 }
 
+.search-hero {
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 
+.form-control {
+  height: 25px;
+  box-shadow: 0 10px 20px 0 #18021a;
+  border: 2px solid #dbe6f0;
+  border-radius: 5px; 
+  padding: 5px;
+  width: 35%;
+  margin-left: 20px; /* adjust this value to create space between the placeholder and the input field */
+}
+
+.form-control::placeholder {
+  color: #a2a2a2;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+}
+.product-added-message {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  font-weight: bold;
+  transform: translate(-50%, 0);
+  width: 400px; /* set the width of the element */
+  font-size: 24px;
+  color: rgb(189, 230, 10);
+  text-align: center;
+  margin: 20px;
+  box-shadow: 0px 0px 10px rgba(233, 81, 5, 0.5);
+  animation: flash 1s linear infinite;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}

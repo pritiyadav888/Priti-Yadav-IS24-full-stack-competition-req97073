@@ -1,15 +1,20 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use('/api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const PORT = process.env.PORT || 3000;
 let products = [];
 
+// Regular expression for YYYY/MM/DD format
+const dateRegex = /^\d{4}\/\d{2}\/\d{2}$/; 
 // Generate sample products
 for (let i = 1; i <= 40; i++) {
   // Generate a random product ID between 1 and 1000
@@ -56,6 +61,7 @@ app.listen(PORT, () => {
   console.log(products);
 });
 
+
 // GET health endpoint
 app.get('/api/health', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
@@ -81,6 +87,10 @@ app.get('/api/products/:id', (req, res) => {
 // POST new product endpoint
 app.post('/api/products', (req, res) => {
   const product = req.body;
+  if (!dateRegex.test(product.startDate)) {
+    res.status(400).send('Start date should be in the format YYYY/MM/DD');
+    return;
+  }
   product.productId = Math.floor(Math.random() * 1000) + 1;
   products.push(product);
   res.send(product);
@@ -94,14 +104,24 @@ app.put('/api/products/:id', (req, res) => {
     res.status(404).send('Product not found');
   } else {
     const product = req.body;
-    product.productId = id;
-    products[productIndex] = product;
-    console.log('Updated product:', product);
-    res.send(product);
+    // Check if any of the required fields are empty
+    if (
+      !product.productName ||
+      !product.productOwnerName ||
+      !product.scrumMasterName ||
+      !product.developers ||
+      !product.methodology
+    ) {
+      // Return an error response
+      res.status(400).send('All fields are required!');
+    } else {
+      product.productId = id;
+      products[productIndex] = product;
+      res.send(product);
+    }
   }
 });
 
-  // DELETE product endpoint
   // DELETE product endpoint
 app.delete('/api/products/:id', (req, res) => {
   const id = parseInt(req.params.id);

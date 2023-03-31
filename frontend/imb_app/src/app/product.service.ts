@@ -47,8 +47,10 @@ export class ProductService {
   }
 
   // Update existing product
-  updateProduct(product: Product): Observable<Product> {
-    const url = `${this.PRODUCT_API_URL}/${product.productId}`;
+
+  updateProduct(id: number, product: Product): Observable<Product> {
+    // console.log('product:', product); // log the product parameter
+    const url = `${this.PRODUCT_API_URL}/${id}`;
     return this.http.put<Product>(url, product).pipe(
       map(updatedProduct => {
         const productIndex = this.products.findIndex(p => p.productId === updatedProduct.productId);
@@ -57,10 +59,11 @@ export class ProductService {
         }
         return updatedProduct;
       }),
+      tap(updatedProduct => console.log('updated product FROM SERVICE:', updatedProduct)), // add this line to log the updated product
       catchError(this.handleError<Product>('updateProduct'))
     );
   }
-
+  
   // Delete product
   deleteProduct(id: number): Observable<any> {
     const url = `${this.PRODUCT_API_URL}/${id}`;
